@@ -2,3 +2,63 @@
   font-family: sans-serif;
   text-align: center;
 }
+
+.head {
+  margin-left: 150px;
+  margin-top: -9px;
+}
+.logout {
+  position: relative;
+}
+
+.links {
+  color: white;
+  height: 100%;
+}
+
+.app-bar {
+  background-color: white;
+  color: black;
+}
+
+.navbar {
+  background-color: #3b13ad;
+}
+
+.add-btn {
+  color: #6343be;
+}
+
+.divider-logo {
+  color: #ae5a5a;
+}
+
+.title,
+.table-title {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  margin-left: 20px;
+}
+
+.circular-progress {
+  display: flex;
+  justify-content: center;
+  color: yellow;
+}
+
+.person {
+  margin-right: 10px;
+  margin-top: -20px;
+}
+
+.name-cell {
+  margin-left: -30px;
+}
+
+.title-row {
+  border-bottom: 2px solid gray;
+}
+
+.formButtons {
+  margin-right: 8%;
+}
