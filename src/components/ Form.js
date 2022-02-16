@@ -1,7 +1,7 @@
 import React from "react";
 import { addUserAction } from "../redux/user/userActions";
 import { useDispatch } from "react-redux";
-const initialList = ["Learn React", "Learn Firebase", "Learn GraphQL"];
+const initialList = ["Donat", "Joel", "Emmy"];
 
 const ListWithAddItem = () => {
   const [value, setValue] = React.useState("");

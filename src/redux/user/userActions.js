@@ -19,11 +19,11 @@ export const viewUsersAction = () => async (dispatch) => {
 export const addUserAction = (formData) => {
   return (dispatch) => {
     apiCall
-      .post("/users", { formData })
+      .post("/users", formData )
       .then((res) => {
-        console.log("201: user created", res);
+        console.log("201: user created", res.data);
         dispatch({
-          type: "ADD_USER",
+          type: ADD_USER,
           payload: res.data,
         });
       })

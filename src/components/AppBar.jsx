@@ -16,9 +16,18 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { Input, FormControl } from "@mui/material";
 import { addUserAction } from "../redux/user/userActions";
 import { useSelector, useDispatch } from "react-redux";
+import CircularProgress from "@mui/material/CircularProgress";
+
 
 export default function ButtonAppBar() {
-  const users = useSelector((state) => state.user.userInfo);
+  const users = useSelector((state) => state.users.userInfo);
+  let newUser = useSelector((state) => state.new.user);
+  const [cancel, changeCancel] = useState("Cancel");
+  const [submitBtn, changeSubmitBtn] = useState("Submit");
+  const [warning, changeWarning] = useState("");
+   const [counter, setCounter] = useState(0);
+  const [disabled, disableSubmit] = useState(false);
+  const [isSubmited, formSubmited] = useState(false);
   const dispatch = useDispatch();
   let Location = useLocation();
   const [title, setTitle] = useState("");
@@ -42,46 +51,99 @@ export default function ButtonAppBar() {
     }
   }
 
-  const initialList = [
-    {
-      name: "",
-      surname: "",
-      street: "",
-      suite: "",
-      city: "",
-      zipcode: "",
-      lat: "",
-      lng: "",
+  const styles = theme => ({
+    textField: {
+        width: '90%',
+        marginLeft: 100,
+        marginLeft: 'auto',            
+        paddingBottom: 0,
+        marginTop: 0,
+        fontWeight: 500
     },
-  ];
-
+   
+});
+  
   const [open, setOpen] = useState(false);
-  const [value, setValue] = React.useState("");
-  const [list, setList] = React.useState(initialList);
+
+  const [state, setState] = React.useState({
+    name: "",
+    username: "",
+    street: "",
+    suite: "",
+    city: "",
+    zipcode: "",
+    lat: "",
+    lng: "",
+  });
 
   const handleChange = (event) => {
-    setValue((list[event.target.id] = event.target.value));
-    console.log(list);
+    const { id, value} = event.target;
+    setState((prevState) => ({
+      ...prevState,
+      [id]: value
+    }));
+    
   };
 
   const handleSubmit = (event) => {
-    if (value) {
-      setList(list.concat(value));
-    }
-    dispatch(addUserAction(list));
-    setValue("");
-
     event.preventDefault();
+    console.log("list==========================",state);
+    dispatch(addUserAction(state));
+   
+
+    
   };
 
   const hundleClickOpen = () => {
     setOpen(true);
+    setState("")
+    
+    changeCancel("Cancel");
+    changeSubmitBtn("Submit");
+    disableSubmit(false);
+    console.log("....................+++++++++>>>>>>>>>", newUser.length)
   };
+
+
 
   const hundleClickClose = () => {
     setOpen(false);
   };
 
+  const hundleSubmitBtn = () => {
+   
+    newUser && newUser.length === 0 ? changeSubmitBtn(<CircularProgress />) : changeSubmitBtn("Submit");
+
+  };
+
+  
+    
+ 
+
+  useEffect(()=> {
+    const interval = setInterval(() => {
+      setCounter(counter + 1);
+    }, 1000);
+
+    if (newUser.length === 0) 
+    changeWarning("");
+    
+    else if (newUser.length === 0 &&  counter === 5)
+    changeWarning("User was not added");
+     else
+     {
+      changeSubmitBtn("Submited");
+      disableSubmit(true)
+     }
+    
+     
+  },[newUser])
+
+  
+    
+
+
+ 
   return (
     <AppBar position="static" style={{ boxShadow: "none" }}>
       <Toolbar className="app-bar">
@@ -100,25 +162,26 @@ export default function ButtonAppBar() {
       <Dialog open={open} onClose={hundleClickClose}>
         <DialogTitle style={{ textAlign: "center", fontWeight: "Bold" }}>
           Add user
+          <div>{warning}</div>
         </DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit}>
-            <FormControl>
+            <FormControl className="formButtons">
               <label for="name">Name:</label>
 
               <TextField
-                value={list.name}
+                
                 onChange={handleChange}
                 authoFocus
                 id="name"
               />
-            </FormControl>
-            <br />
-            <FormControl>
-              <label for="username">Username:</label>
+            </FormControl >
+           
+            <FormControl  sx={{ marginLeft: 3}}>
+              <label for="username" >Username:</label>
 
               <TextField
-                value={list.username}
+                
                 onChange={handleChange}
                 authoFocus
                 id="username"
@@ -127,21 +190,21 @@ export default function ButtonAppBar() {
             <br />
 
             <FormControl>
-              <label for="street">Steet:</label>
+              <label for="street">Street:</label>
 
               <TextField
-                value={list.street}
+                
                 onChange={handleChange}
                 authoFocus
                 id="street"
               />
             </FormControl>
-            <br />
-            <FormControl>
+            
+            <FormControl sx={{ marginLeft: 3}}>
               <label for="suite">Suite:</label>
 
               <TextField
-                value={list.suite}
+              
                 onChange={handleChange}
                 authoFocus
                 id="suite"
@@ -152,18 +215,18 @@ export default function ButtonAppBar() {
               <label for="city">city:</label>
 
               <TextField
-                value={list.city}
+               
                 onChange={handleChange}
                 authoFocus
                 id="city"
               />
             </FormControl>
-            <br />
-            <FormControl>
+           
+            <FormControl sx={{ marginLeft: 3}}>
               <label for="zipcode">zipcode</label>
 
               <TextField
-                value={list.zipcode}
+         
                 onChange={handleChange}
                 authoFocus
                 id="zipcode"
@@ -174,18 +237,18 @@ export default function ButtonAppBar() {
               <label for="lat">Lat:</label>
 
               <TextField
-                value={list.lat}
+              
                 onChange={handleChange}
                 authoFocus
                 id="lat"
               />
             </FormControl>
-            <br />
-            <FormControl>
+            
+            <FormControl sx={{ marginLeft: 3}}>
               <label for="lng">Lng:</label>
 
               <TextField
-                value={list.lng}
+               
                 onChange={handleChange}
                 authoFocus
                 id="lng"
@@ -198,16 +261,19 @@ export default function ButtonAppBar() {
                 color="success"
                 variant="contained"
               >
-                cancel
+                {newUser && newUser.length === 0 ? "Cancel" : "Close"}
               </Button>
 
               <Button
                 variant="contained"
                 color="primary"
-                onClick={hundleClickClose}
+                onClick={hundleSubmitBtn }
+                
                 type="submit"
+                disabled={disabled}
+                
               >
-                Submit
+                {submitBtn}
               </Button>
             </DialogActions>
           </form>

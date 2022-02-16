@@ -1,6 +1,6 @@
-import { VIEW_USERS, ERROR_HUNDLING, DELETE_USER, ADD_USER } from "./userTypes";
+import { VIEW_USERS, DELETE_USER} from "./userTypes";
 
-const initialState = {
+export const initialState = {
   userInfo: [],
 };
 
@@ -11,16 +11,7 @@ const viewUsersReducer = (state = initialState, action) => {
         ...state,
         userInfo: action.payload,
       };
-    case ADD_USER:
-      const users = state.userInfo.concat(action.payload);
-      return { ...state, users };
-
-    case ERROR_HUNDLING:
-      return {
-        ...state,
-        userInfo: {},
-      };
-
+   
     default:
       return state;
   }
@@ -30,7 +21,7 @@ const deleteUserReducer = (state = initialState, action) => {
   switch (action.type) {
     case DELETE_USER:
       return {
-        ...state,
+        ...state, userInfo: state.userInfo.splice(action.payload, 1)
       };
   }
 };

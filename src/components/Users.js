@@ -26,7 +26,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import Divider from "@mui/material/Divider";
 const Users = () => {
   const [error, setError] = useState([]);
-  const users = useSelector((state) => state.user.userInfo);
+  const users = useSelector((state) => state.users.userInfo);
   const [counter, setCounter] = useState(0);
   console.log("_______________UserInformation________", users);
   const Alert = React.forwardRef(function Alert(props, ref) {
@@ -50,7 +50,7 @@ const Users = () => {
     setTimeout(() => {
       setCounter(counter + 1);
     }, 15000);
-  }, [1000]);
+  }, []);
   console.log("==============counter is=============", counter);
   console.log("========error is=========", error);
   const Row = (props) => {
@@ -82,8 +82,8 @@ const Users = () => {
           <TableCell align="left">{row?.website}</TableCell>
           <TableCell align="left" sx={{ color: "gray" }}>
             <EditIcon />
-            <DeleteIcon />
-          </TableCell>
+            <DeleteIcon onClick={()=>alert("User deleted")}/>
+          </TableCell >
         </TableRow>
 
         <TableRow>
